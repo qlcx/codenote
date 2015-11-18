@@ -1,0 +1,24 @@
+3.对象与数组
+使用split可以将一个字符串分解成一个数组
+var words = "Cities of the Interior";
+words.split(" "); => ["Cities","of","the","Interior"] 
+
+charAt方法用于从某个字符串获取指定的字符, eg: x.charAt(0)给出第一个字符
+slice用于从第一个参数所在的位置开始到第二个参数所在位置结束拷贝出一部分字符串
+var paragraph = "born 15-11-2003 (mother Spot):White Fang";
+paragraph.charAt(0) == "b" && paragraph.charAt(1) == "o"; => true
+paragraph.slice(0, 4) == "born"; => true
+
+如果charAt或slice获取不存在的字符串，charAt将会返回空字符""，而slice则会将不存在的内容忽略掉
+eg:
+	"pip".charAt(250); => ""
+	"Nop".slice(1, 10); => "op"
+	
+使用indexOf方法，可以找出字符第一次出现的位置后者截取字符串中的子串
+如果slice只有一个参数，它将返回从指定位置一直到字符串结束位置之间的字符串
+function catNames(paragraph) {
+	var colon = paragraph.indexOf(":");
+	return paragraph.slice(colon + 2).split(", ");
+}
+catNames("born 20/09/2004 (mother Yellow Bess): Doctor Hobbles the 2nd, Noog");
+=> ["Doctor Hobbles the 2nd", "Noog"]

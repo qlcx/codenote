@@ -1,0 +1,41 @@
+#include <iostream>
+cerr输出警告和错误信息
+clog输出程序运行时的一般信息
+cin >> 变量名; //v vf标准输入
+
+/*...*/注释对不能嵌套
+
+文件结束符号：
+windows: Ctrl+Z+Enter
+Linux: Ctrl+D
+
+
+类对象相加   P19	？？？？？？
+
+char和signed char是不同的   char会表现为signed或unsigned一种，具体由编译器决定
+
+算数表达式中既有无符号数又有有符号的数时，会将有符号数转化为无符号数进行计算
+int i = -1;
+unsigned int j = 1;
+i*j => 4294967295
+
+//死循环，无符号数永远不可能小于零
+for(unsigned u = 0;  u >= 0; --u)
+	std::cout << u << std::endl;
+	
+转义字符\
+\x后面跟十六进制	eg:	\x4d(字符M)
+\后面跟八进制(最多三位数字)		eg:	\115(字符M)
+
+指定字面值类型-------------------------->P3710245
+L'a', L表示宽字符，类型为wchar_t
+u8"hi!", u8表示utf-8类型(仅用于字符串字面值常量1)
+
+extern int i;	//声明i而非定义i
+int j;	//声明并定义j;
+
+引用类型的初始值必须是一个对象而不能是一个值
+int ival = 1024;
+int &refVal = ival;	//refVal指向ival(是ival的另一个名字)
+int &refVal;	//报错    引用必须被初始化
+refVal = 2;	//即ival被赋值为2

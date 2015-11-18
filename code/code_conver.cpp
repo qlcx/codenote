@@ -25,7 +25,7 @@ int code_convert(char* from_charset, char* to_charset, char* inbuf, size_t inlen
 int main() {
 	//转换编码两种方式
 	/*
-	1.修改文件编码为utf-8，并将数据字符也从utf-8转换到utf-8
+	1.修改文件编码为utf-8，并将数据字符也从utf-8转换到utf-8(原本就有的字符还是euc编码，新加的字符是utf-8编码) ？？？有待商榷
 	2.文件编码为euc-an，解决字符编码不同导致的字符长度不同，设置一个较大的缓冲区，存放转换后的数据
 	*/
 	//euc-an编码文件无法将宽字符赋值给wchar_t
