@@ -39,3 +39,25 @@ int ival = 1024;
 int &refVal = ival;	//refVal指向ival(是ival的另一个名字)
 int &refVal;	//报错    引用必须被初始化
 refVal = 2;	//即ival被赋值为2
+
+NULL是无类型的
+nullptr为字面值常量是有类型的	type decltype(nullptr) nullptr_t
+尽量将指针初始化为0或nullptr
+eg：解决下面函数重载问题   等等
+void f(void*)
+{
+}
+void f(int)
+{
+}
+int main()
+{
+    f(0); // what function will be called?
+}
+
+int *const p1	//顶层const
+const int *p2	//底层const
+执行拷贝操作时顶层const不受影响而底层const两个对象数据必须具有相同的底层const资格或者它们之间的数据类型可以相互转换
+
+const int *p = nullptr;	//p是一个指向整型常量的指针
+constexpr int *q = nullptr;	//q是一个指向整数的常量指针
