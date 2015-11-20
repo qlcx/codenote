@@ -61,3 +61,18 @@ const int *p2	//底层const
 
 const int *p = nullptr;	//p是一个指向整型常量的指针
 constexpr int *q = nullptr;	//q是一个指向整数的常量指针
+
+using //别名声明
+
+auto类型
+auto让编译器通过初始值来推算变量的类型
+atuo i = a + b;	//i初始化为a和b相加的结果
+auto会忽略掉顶层const而保留底层const
+
+decltype类型
+它的作用是选择并返回操作数的数据类型
+decltype(f()) sum = x;	//sum的类型就是函数f()的返回类型
+decltype会保留顶层const类型
+decltype的表达式如果是加上括号的变量，结果将是引用
+decltype((i)) d;	//error  d是int&类型 必须初始化
+decltype((variable))的结果永远是引用
