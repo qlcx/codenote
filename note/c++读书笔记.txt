@@ -76,3 +76,32 @@ decltype会保留顶层const类型
 decltype的表达式如果是加上括号的变量，结果将是引用
 decltype((i)) d;	//error  d是int&类型 必须初始化
 decltype((variable))的结果永远是引用
+
+string类型初始化
+string a(5, 'c');	//a的内容是ccccc
+string可以直接使用"+"连接字符串(必须确保+号两边的运算对象至少有一个是string)
+使用cin输入初始化string对象时会自动忽略开头的空白(空格符，换行符，制表符等)并从第一个真正的字符开始读起，直到遇见下一处空白为止
+getline则可以读取一整行直到换行符     string line;  getline(cin, line);
+
+string类型可以使用size方法判断其对象大小
+eg:
+	string s1 = "abcdefg";
+	s1.size()	//其返回值是size_type类型 是无符号的
+//所以 s1.size() < n; //如果n是一个负的int类型 则表达式永远为true
+	
+vector标准库类型
+vector<int> ivec(10, -1);	//10个int类型元素，每个都初始化为-1
+vector<string> v1{"a", "an", "the"};	//列表初始化，3个string类型元素
+vector<int> i = 10;	//error，必须指定向量大小eg：vector<int> i = (10);
+vector<string> v6("hi");	//error 不能使用字符串字面值构建vector对象
+vector<string> v7{10};	//v7有10个默认初始化的元素
+vector<string> v5{"hi"};
+只有v5是列表初始化，v7不是列表初始化，无法用int值初始化string对象
+
+vector成员函数push_back
+vector<int> v2;
+for(int i = 0; i != 100; ++1)
+	v2.push_back(i);	//依次把整数值放入v2尾部
+tip：
+	如果循环体内部包含有向vector对象添加元素的语句，则不能使用范围for循环
+	vector对象的下标运算符可以用于访问已存在的元素而不能够用于添加元素(添加元素请使用push_back)
