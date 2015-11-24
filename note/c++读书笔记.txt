@@ -105,3 +105,45 @@ for(int i = 0; i != 100; ++1)
 tip：
 	如果循环体内部包含有向vector对象添加元素的语句，则不能使用范围for循环
 	vector对象的下标运算符可以用于访问已存在的元素而不能够用于添加元素(添加元素请使用push_back)
+	
+vector支持下标运算符，string支持迭代器
+  1 #include <iostream>
+  2 #include <string>
+  3 #include <cstring>
+  4 #include <vector>
+  5 using namespace std;
+  6 int main()
+  7 {
+  8     string a = "this is a string";
+  9     cout << *a.begin() << endl;       //t
+ 10 
+ 11     vector<int> vecint;
+ 12     for(int i = 0; i < 10; i++)
+ 13         vecint.push_back(i);
+ 14     cout << vecint[0] << endl;      //0
+ 15     return 0;
+ 16 }
+
+iterator和const_iterator用来表示迭代器的类型
+vector<int>:: iterator it;	//it能读写vector<int>的元素
+string:: iterator it2;	//it2能读写string对象中的字符
+vector<int>:: iterator it3;	//it3只能读元素不能够写元素
+
+vector<int> v;
+const vector<int> cv;
+auto it1 = v.begin();	//it1的类型为vector<int>:: iterator
+auto it2 = cv.begin();	//it2的类型为vector<int>:: const_iterator
+C++11标准
+引入cbegin()和cend();
+auto it3 = v.begin();	//it3的类型为vector<int>:: const_iterator
+无论vector对象(string对象)是否是const类型其返回值都是const_iterator类型
+
+不能在范围for循环中向vector对象添加元素
+任何一种可能改变vector对象容量的操作，比如push_back，都会使该vector对象的迭代器失效
+//如果容器是vector或string，
+//如果存储空间被重新分配，迭代器、指针、引用都会失效;
+//如果存储空间的未重新分配则在插入位置之前的迭代器、指针、引用都有效而插入位置之后的元素的迭代器、指针、引用都会失效)
+详细：P315
+
+vector和string迭代器 能够使用关系运算符进行比较，但两个迭代器必须合法且指向的是同一个容器
+
