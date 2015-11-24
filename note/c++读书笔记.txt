@@ -135,7 +135,7 @@ auto it1 = v.begin();	//it1的类型为vector<int>:: iterator
 auto it2 = cv.begin();	//it2的类型为vector<int>:: const_iterator
 C++11标准
 引入cbegin()和cend();
-auto it3 = v.begin();	//it3的类型为vector<int>:: const_iterator
+auto it3 = v.cbegin();	//it3的类型为vector<int>:: const_iterator
 无论vector对象(string对象)是否是const类型其返回值都是const_iterator类型
 
 不能在范围for循环中向vector对象添加元素
