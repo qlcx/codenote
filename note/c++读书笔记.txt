@@ -147,3 +147,24 @@ auto it3 = v.cbegin();	//it3的类型为vector<int>:: const_iterator
 
 vector和string迭代器 能够使用关系运算符进行比较，但两个迭代器必须合法且指向的是同一个容器
 
+size_t、ptrdiff_t定义在cstddef头文件中
+size_t类型，size_t类型是一种机器相关的无符号类型，它被设计的足够大以便能够表示内存中任意对象的大小
+ptrdiff_t类型，(eg: 两个指针相减的结果类型)，是一种带符号的类型
+
+int a1[] = {0, 1, 2, 3, 4, 5};
+int a2[] = a1;	//error 不能使用一个数组来初始化另一个数组
+a2 = a1;	//error 不能将一个数组直接赋值另一个数组
+auto a3 = a1;	//a3被初始化为一个指针，指向a1首部
+
+C++11标准
+int array[] = {0, 1, 2, 3, 4, 5, 6};
+int *beg = begin(array);	//指向数组首元素
+int *end = end(array);	//指向数组尾元素的下一元素位置
+
+虽然标准库类型string和vector也支持下标运算但是标准库类型限定使用的下标类型必须是无符号类型(eg: size_type)
+如果它们的下标设置成了有符号的类型，则会自动转成string::size_type无符号类型(所以当下标为负值的时候很容易出错)
+
+char a[] = {'g', 'a', 'o'};		//不以空字符结束
+cout << strlen(a) << endl;	//长度未知，strlen运行到'\0'才会停下来
+
+string可以直接使用<、>等关系运算符比较字符串而C风格必须借助字符串操作函数
