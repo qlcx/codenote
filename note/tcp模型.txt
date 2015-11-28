@@ -1,0 +1,46 @@
+select模型
+
+设置文件描述符
+fd_set数组变量：用来存储监视多个文件描述符
+
+对fd_set变量中注册或更改值得操作由下列宏完成
+FD_ZERO(fd_set *fdset);		//将fd_set变量的所有位初始化为0
+FD_SET(int fd, fd_set *fdset);	//在fdset指向的变量中注册文件描述符信息
+FD_CLR(int fd, fd_set *fdset);	//在fdset指向的变量中删除文件描述符信息
+FD_ISSET(int fd, fd_set *fdset);	//若参数fdset指向的变量中包含文件描述符fd的信息，则返回true
+
+int select(int maxfd, fd_set *readset, fd_set *writeset, fd_set *exceptset, const struct timeval *timeout);
+maxfd: 文件描述符的最大值
+readset: 所有文件描述符中是否存在待读取数据
+writeset: 所有文件描述符中是否可以传输无阻塞数据
+exceptset: 所有文件描述符是否发生异常
+timeout: 超时时间
+
+返回值：
+发生错误返回-1；超时返回0
+
+select只要其中一个文件描述符满足其可读/可写/无异常就能够正确返回
+
+超时结构体
+struct timeval
+{
+	long tv_sec;	//秒
+	long tv_usec;	//毫秒
+}
+
+当select超时时间设置为0的时候 函数运行到select的时候
+会阻塞，当文件描述符中有一个是可读/可写的时候才能够往
+下继续执行操作。
+
+
+
+
+
+
+
+
+
+
+epoll模型
+
+
