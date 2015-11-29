@@ -200,3 +200,13 @@ m%(-n) => m%n
 	const_cast<string>(cp);		//false: const_cast只能改变常量属性
 4、reinterpret_cast:
 	为运算对象的位模式提供较低层次上的重新解释
+	
+;	//空语句
+ival = v1 + v2;;	//true 第二个;表示一个空语句
+
+for(;;) for循环支持定义多个对象，但是只支持一条声明语句
+
+//范围for语句
+for(declaration : expression)
+	statement
+范围for语句中预存了end值，所以在范围for语句中使用删除、插入操作都有可能使end函数的值无效   P169
