@@ -210,3 +210,33 @@ for(;;) for循环支持定义多个对象，但是只支持一条声明语句
 for(declaration : expression)
 	statement
 范围for语句中预存了end值，所以在范围for语句中使用删除、插入操作都有可能使end函数的值无效   P169
+
+使用引用避免拷贝
+eg：比较两个string字符串，但是string对象很长的话
+bool isShorter(const string &s1, const string &s2)
+{
+	return s1.size() < s2.size();
+}
+并且如果函数无须改变引用形参的值，最好将其声明为常量引用;
+eg：string::size_type find_char(string &s, char c, string::size_type &occurs);
+如果find_char("Hello World", 'o', ctr);调用的话编译会发生错误，因为string &s只能接受非常量string对象，所以应该设为const string &s
+9，哦，，哦，\，}
+实参初始化形参时会忽略掉顶层const
+c++中可以定义若干具有相同名字的函数，但是不同形参列表应该有明显的区别
+void fcn(const int i)
+void fcn(int i)
+//error 重复定义，因为顶层const被忽略掉了
+
+int main(int argc, char *argv[])
+使用argv的时候注意argv[0]保存的是程序的名字，用户的输入从argv[1]开始保存
+
+initializer_list类型(保存在同名头文件中)
+使用与vector一样，不一样的是initializer_list对象中的元素永远是常量值
+eg：
+	//expected和actual是string对象
+	if(expected != actual)
+		error_msg("functionX", expected, actual);
+	else
+		error_msg("functionX", "okay");
+//error_msg函数形参个数不同
+void error_msg(ErrCode e, initializer_list<string> i1) {}	//只要类型相同就可以使用initializer_list模板  P199
