@@ -240,3 +240,17 @@ eg：
 		error_msg("functionX", "okay");
 //error_msg函数形参个数不同
 void error_msg(ErrCode e, initializer_list<string> i1) {}	//只要类型相同就可以使用initializer_list模板  P199
+
+string retvlaue()
+{
+	return "Empty";	//error   字面值常量转换成局部临时的string对象，函数结束时存储空间会释放
+}
+
+vector<string> process()
+{
+	//......
+	if(...)
+		return {};	//返回一个空vector对象
+	else
+		return {"functionX", "string"};	//返回列表初始化的vector对象
+}
