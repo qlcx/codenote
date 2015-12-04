@@ -254,3 +254,76 @@ vector<string> process()
 	else
 		return {"functionX", "string"};	//返回列表初始化的vector对象
 }
+
+返回数组指针
+int (*func(int i))[10];		//函数func接受一个int类型实参，返回一个指向含有10个整数的数组的指针
+可以使用尾置返回类型简化它
+auto func(int i) -> int(*)[10];
+
+重载：
+二义性调用：有多于一个函数可以匹配，但是每一个都不是明显的最佳选择，此时将发生错误
+
+string read()
+void print(const string &);
+void print(double);
+void fooBar(int ival)
+{
+	bool read = false;	//新作用域：隐藏了外层的read
+	string s = read();	//error: read是一个布尔值，而不是函数
+	void print(int);	//声明函数，隐藏了之前的print
+	print("Value: ");	//error: print(const string &)被隐藏
+	print(3.14);		//true: 调用print(int), print(double)被隐藏掉了
+}
+
+内联函数inline
+在被调用函数的返回类型前面加上关键字inline
+inline const string & shorterString(const string &s1, const string &s2)
+{
+	return s1.size() <= s2.size() ? s1 : s2;
+}
+
+cout << shorterString(s1, s2) << endl;
+在编译过程中会展开成
+cout << (s1.size() <= s2.size() ? s1 : s2) << endl;
+的形式从而省去了调用函数产生的开销
+
+//常量表达式
+constexpr size_t scale(size_t cnt) {return cnt;}
+当scale的实参是常量时，它返回值也是一个常量表达式；反之则不然
+
+assert(exp);	//exp为一个表达式
+NDEBUG		//关闭调试状态
+CC -D NDEBUG main.c 或者在main.c一开始写#define NDEBUG
+
+//用于调试的局部静态变量
+__FILE__	存放文件名的字符串字面值
+__LINE__	存放当前行号的整形字面值
+__TIME__	存放文件编译时间的字符串字面值
+__DATE__	存放文件编译日期的字符串字面值
+
+string screen(int ht = 24, int wid = 80, char backgrnd = ' ');	//默认实参
+sring window;
+window = screen();	//等价于screen(24, 80, ' ');
+window = screen(66, 256, '#');	//screen(66, 256, '#');
+
+//二义性
+void f(int, int);
+void f(double, double = 3.14);
+f(4, 5.6);	//error，两函数同时满足且从整体上来说无法判断孰优孰劣，此调用具有二义性错误
+
+含有多个可行函数时需要满足：
+1、该函数每个实参的匹配都不劣于其他可行函数需要的匹配
+2、至少有一个实参的匹配优于其他可行函数提供的匹配
+如果判断下来没有一个函数脱颖而出则为二义性错误
+
+void manip(long);
+void manip(float);
+manip(3.14);	//二义性错误，3.14为double类型
+//转换等级划分P219
+
+重载函数指针
+void ff(int*)
+void ff(unsigned int);
+
+void (*pf1)(unsigned int) = ff;	//pf1指向ff(unsigned)
+指针类型必须与重载函数中的某一个精确匹配(返回值类型，形参列表)
