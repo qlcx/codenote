@@ -327,3 +327,49 @@ void ff(unsigned int);
 
 void (*pf1)(unsigned int) = ff;	//pf1指向ff(unsigned)
 指针类型必须与重载函数中的某一个精确匹配(返回值类型，形参列表)
+
+构造函数eg:
+struct Sales_data {
+	//构造函数
+	Sales_data() = default;		//意义：既需要其他形式的构造函数，也需要默认的构造函数
+	Sales_data(const std::string &s) : bookNo(s) {}
+	
+	std::string bookNo;
+}
+
+定义在类内部的成员函数会自动inline
+
+可变数据成员
+mutable
+eg:
+	class Screen {
+	public:
+		void some_member() const;
+	private:
+		mutable size_t access_ctr = 0;	//类内初始化c++11
+	};
+	void Screen::some_member() const	//虽然some_member是const成员函数，但是access_ctr还是可变的
+	{
+		++access_ctr;	//如果access_ctr没有设置mutable则它是只读的
+	}
+	
+即使两个类的成员列表完全一致，它们也是不同的类型P249
+
+//P250
+//前向声明(可以定义指向这种类型的指针或引用，也可以声明(但不能定义)以不完全类型作为参数或者返回类型的函数)
+class Y;
+class x {
+	Y* y = nullptr;	//定义指向Y类型的指针
+};
+class Y {
+	X x;
+};
+
+一个类的成员函数作为另一个类的友元		//该成员函数必须在另一个类之前声明！！！		P251
+struct X {
+	friend void f() {/*友元函数可以定义在类的内部*/};	//即使在类中被定义，只要还没声明那么在类中该函数还是不可见的
+	x() {f();}	//error： f还没有被声明
+	void g();
+}
+void f();	//声明f函数
+void X::g {return f();}	//true, f()已经被声明
