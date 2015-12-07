@@ -373,3 +373,46 @@ struct X {
 }
 void f();	//声明f函数
 void X::g {return f();}	//true, f()已经被声明
+
+编译器处理完类中的全部声明后才会处理成员函数的定义
+
+typedef double Money;
+string bal;
+class Account {
+public:
+	Money balance() {return bal;}	//编译balance的声明时，会先找到Money的声明，balance函数体在整个类可见后才处理，所以返回的是bal成员对象而不是string对象
+private:
+	Money bal;
+	//....
+}
+
+构造函数的初始化和赋值
+class ConstRef {
+public:
+	ConstRef (int ii);
+private:
+	int i;
+	const int ci;
+	int &ri;
+}
+//赋值操作
+ConstRef::ConstRef(int ii)
+{
+	i = ii;		//true;
+	ci = ii;	//error	const不能赋值
+	ri = i;		//error ri没被初始化
+}
+//列表初始化(显示的初始化引用和const成员)
+ConstRef::ConstRef(int ii) : i(ii), ci(ii), ri(i) {}
+
+//委托构造函数
+class Sales_data {
+public:
+	//非委托构造函数
+	Sale_data(string a, unsigned cnt, double price) : bookNo(s), units_sold(cnt), revenue(cnt *price) {}
+	//以下构造函数全部委托第一条构造函数
+	Sales_data() : Sales_data("", 0, 0);
+	Sales_data(string s): Sales_data(s, 0, 0);
+	
+	//....
+}
