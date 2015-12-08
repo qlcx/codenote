@@ -416,3 +416,29 @@ public:
 	
 	//....
 }
+
+隐式的类类型转换
+注意：编译器只会自动执行一步类型转换
+combine(const Sale_data &);
+combine("9-9999-9999");	//error, 需要把9-9999-9999转换成string类型才能再转换成Sale_data类型需要两步
+//true
+combine(string("9-9999-9999"));	//隐式转换
+combine(Sale_data("9-9999-9999"));	//显示转换
+
+//抑制构造函数的隐式转换
+在构造函数前加上explicit关键字(explicit Sale_data(const std::string &s):bookNo(s) {})，之前两种用法都不能通过编译(除了显示转换的方式)。
+注意：
+1、explicit只对一个实参的构造函数有效，并且需要多个实参的构造函数也不能用于执行隐式类型转换
+2、只能在类内声明构造函数时使用explicit关键字，在类外部定义时不应该重复
+3、explicit修饰的构造函数只能使用直接初始化的方式
+Sale_data item1("hiya");	//直接初始化	true
+Sale_data item2 = "hiya";	//拷贝初始化	error
+
+静态成员函数
+1、不能包含this指针
+2、静态成员函数不能声明成const
+3、不能在static函数体内使用this指针
+4、静态数据成员一般在类内部声明在类的外部定义和初始化(由于不属于类的任何一个对象，所以它们不是由类的构造函数初始化的)
+5、一般静态数据成员不应该在类内部初始化，除了: (在Account类内部)static constexpr int period = 30;	//period是常量表达式   P270
+6、即使一个常量静态数据成员在类内部初始化了，通常情况下也应该在类的外部定义(不带初始值)一下该成员
+constexpr int Account::period;	//一个不带初始值的静态成员的外部定义
