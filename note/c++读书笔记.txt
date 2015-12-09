@@ -442,3 +442,40 @@ Sale_data item2 = "hiya";	//拷贝初始化	error
 5、一般静态数据成员不应该在类内部初始化，除了: (在Account类内部)static constexpr int period = 30;	//period是常量表达式   P270
 6、即使一个常量静态数据成员在类内部初始化了，通常情况下也应该在类的外部定义(不带初始值)一下该成员
 constexpr int Account::period;	//一个不带初始值的静态成员的外部定义
+
+IO库
+iostream：用于读写的流基本类型(istream, ostream, iostream)
+fstream：读写命名文件类型(ifstream, ofstream, fstream)
+sstream: 读写内存string对象类型(istringstream, ostringstream, stringstream)
+//不能拷贝或对IO对象赋值 ofstream out1, out2;	out1 = out2;	//error
+
+cout << unitbuf;	//所有输出操作后都会立即刷新缓冲区
+cout << nounitbuf;	//回到正常的缓冲方式
+!!如果程序崩溃输出缓冲区不会被刷新
+
+文件输入输出
+fstream fstrm;	//创建一个未绑定的文件流
+fstream fstrm(s);	//创建一个fstream，并打开名为s的文件
+fstream fstrm(s, mode);	//创建一个fstream，并按照mode打开文件
+fstrm.open(s);	//打开名为s的文件，并将文件与fstrm绑定
+fstrm.close();	//关闭文件
+fstrm.is_open();	//返回一个bool值，指出与fstrm关联的文件是否成功打开且尚未关闭
+
+
+文件mode：
+in	//读
+out	//写		会丢失已有数据(可以同时指定app或in模式保证数据不丢失)
+app	//每次写操作前均定位到文件末尾
+ate	//打开文件后立即定位到文件末尾
+trunc	//截断文件
+binary	//以二进制的方式进行IO
+open调用默认的模式是out模式(out模式意味着同时使用trunc模式)
+限制：P286
+
+istringstream和ostringstream对整行文本的输出输入比较有效果
+
+iostream处理控制台IO
+fstream处理命名文件IO
+stringstream完成内存string的IO
+fstream和stringstream都是继承自iostream
+
