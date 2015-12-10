@@ -479,3 +479,31 @@ fstream处理命名文件IO
 stringstream完成内存string的IO
 fstream和stringstream都是继承自iostream
 
+顺序容器
+vector: 可变大小数组
+deque: 双端对列
+list: 双向链表
+forward_list: 单向链表	不支持--操作
+array: 固定大小数组
+string: 与vector类似，但专门用于保存字符
+最好使用vector，程序要求随机访问元素，则使用vector或deque，程序要求在容器的中间插入或删除元素，则使用list或forward_list
+
+如果顺序容器中的类型没有默认构造函数就需要提供一个初始值
+//noDefault是一个没有默认构造函数的类型
+vector<noDefault> v1(10, init);	//true   数目：10，初始值：init
+vector<noDefault> v2(10);	//false
+
+使用迭代器拷贝不要求容器类型和元素类型相同(前提是元素类型之间可以转换)，直接拷贝就要保证两个容器的类型及其元素类型必须匹配
+list<string> authors = {"milton", "shakespeara", "austen"};
+it为authors中的一个元素
+deque<string> authList(authors.begin(), it);	//拷贝元素直到但不包括it指向的元素
+
+定义一个array时，除了要指定元素类型还需要指定容器大小
+array<int, 42> ia1;	//true
+array<int> ia2;	//false
+
+内置数组类型不能进行拷贝或对象赋值操作但是array类型可以
+int dits[3] = {0, 1, 2};
+int cpy[3] = dits;	//false
+array<int, 3> digits = {0, 1, 2};
+array<int, 3> copy = digits;	//true
