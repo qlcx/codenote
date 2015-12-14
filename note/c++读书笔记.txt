@@ -726,3 +726,48 @@ eg:
  replace(ilst.begin(), ilst.end(), 0, 42);
  //ilst不变，ivec是ilst的拷贝，但所有的0都变为42
  replace(ilst.cbegin(), ilst.end(), back_inserter(ivec), 0, 42);
+ 
+ 重排容器算法
+ sort使用元素类型的<运算符来实现排序
+ unique用来消除重复单词，返回一个指向不重复区域之后位置的迭代器(算法不能执行容器操作，最后还是需要依靠erase完成删除数据的操作)
+ 
+ 向算法传递函数
+ sort可以接受第三个参数(谓词(一元谓词/二元谓词))
+ //比较函数，用来按长度排序单词
+ bool isShorter(const string &s1, const string &s2)
+ {
+	return s1.size() < s2.size();
+ }
+ //谓词取代了<来比较元素
+ sort(words.begin(), words.end(), isShorter);	//按长度由短至长排序words
+ 
+ //按长度重新排序，长度相同的单词维持字典序
+ stable_sort(words.begin(), words.end(), isShorter);
+ 
+ find_if算法接受一对迭代器，表示一个范围，它的第三个参数是一个谓词，它返回第一个使谓词返回非0值得元素，如果不存在则返回尾后迭代器
+ 
+ lambda表达式
+ [capture list](parameter list) -> return type {function body}
+ //lambda必须使用位置返回来指定返回类型
+ //lambda可以忽略列表和返回类型，但必须永远包含捕获列表和函数体
+ //如果忽略返回类型，lambda根据函数体中的代码推断出返回类型
+ //如果lambda的函数体包含任何单一return语句之外的内容，且未指定返回值类型，则返回void
+ auto f = [] {return 42};	//忽略括号和参数列表等价于指定一个空参数列表
+ cout << f() << endl;	//42
+ 
+ stable_sort(words.begin(), words.end(),
+				[](const string &s1, const string &s2)
+					{return s1.size() < s2.size()});	//功能同上
+					
+ //使用谓词来摆脱算法的谓词必须严格接收一个或两个参数
+ 
+ //获取一个迭代器，指向第一个满足size()>=sz的元素
+ auto = wc = find_if(words.begin(), words.end(),
+				[sz](const string &a)
+					{return a.size() >= sz;})
+	
+ for_each算法	
+ //打印长度大于等于给定值的单词(wc为指向上文返回满足size()>=sz的一个元素的迭代器)
+ for_each(wc, words.end(),
+		[](const string &s) {cout << s << " ";});
+ cout << endl;
