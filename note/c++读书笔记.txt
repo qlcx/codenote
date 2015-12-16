@@ -850,4 +850,24 @@ eg:
  istream_iterator<int> eof;	//空的istream_iterator作为尾后迭代器
  vector<int> vec(in_iter, eof);	//迭代器范围构造vec
  
+ ostream_iterator<T> out(os, d);	//out将类型为T的值写到输出流os中, 每个值后面都输出一个d
+ //第二个参数是可选参数(是一个c风格的字符串)，且必须将ostream_iterator绑定到一个指定的流
+ 
+ eg：
+ //将vec中的每个元素写到cout，每个元素后面加一个空格
+ ostream_iterator<int> out_iter(cout, " ");
+ for(auto e : vec)
+	*out_iter++ = e;	//赋值语句将元素写到cout	//* 和 ++ 没有什么实际作用，可以省略，加上方便理解
+ cout << endl;
+ 
+ 反向迭代器(forward_list不支持)
+ 递增和递减操作的含义会颠倒过来	
+ 通过rbegin、rend、crbegin和crend成员函数来获得反向迭代器
+ 
+ eg：
+ first,middle,last
+ auto rcomma = find(line.crbegin(), line.crend(), ',');	//反向搜索第一个逗号
+ cout << string(line.crbegin(), rcomma) << endl;	//输出tsal，因为反向迭代器会反向处理string
+ cout << string(rcomma.base(), line.cend()) << endl;	//last, 使用reverse_iterator的base成员函数完成反向转换
+ 
  
