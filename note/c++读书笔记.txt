@@ -870,4 +870,53 @@ eg:
  cout << string(line.crbegin(), rcomma) << endl;	//输出tsal，因为反向迭代器会反向处理string
  cout << string(rcomma.base(), line.cend()) << endl;	//last, 使用reverse_iterator的base成员函数完成反向转换
  
+ 顺序容器：
+ 输入迭代器：==、!=、++、*、->
+ 输入迭代器：++、*
+ 前向迭代器：==、!=、++、*、->
+ 双向迭代器：==、!=、++、--、*、->
+ 随机放完迭代器：==、!=、<、<=、>、>=、++、--、+、+=、-、-=、-(two iterators)、*、->、iter[n] == *(iter + n)
+ 
+ 关联容器
+ 关键字：
+	有序容器：
+		map			//保存关键字-值对
+		set			//只保存关键字的容器
+		multimap	//关键字可重复出现的map
+		multiset	//关键字可重复出现的set
+	无序容器：(上面容器中元素使用哈希函数来组织)
+		unordered_map
+		unordered_set
+		unordered_multimap
+		unordered_multiset
+ 
+ //set和multiset定义在set中；map和multimap定义在map中，无序容器定义在unordered_map和unordered_set中
+ 
+ 09		map<string, size_t> word_count;	//map中保存每个元素，string是关键字类型，size_t是值类型
+ 10     string word;
+ 11     while(cin >> word)
+ 12         ++word_count[word];
+ 13     cout << endl;
+ 14     for(const auto &w : word_count)
+ 15         cout << w.first << " occurs " << w.second
+ 16             << ((w.second > 1) ? " times" : " time") << endl;		
+ //输入11 11 22 得到  11 occurs 2 times
+					  22 occurs 1 time
+ //从map中提取一个元素的时候会得到一个pair类型对象，它保存两个名为first和second的数据成员，在map中first保存关键字，second保存对应值
+ 
+ set<string> exclude = {"a", "A" ....};	//
+ 上面程序添加一个限制
+ if(exclude.find(exclude) == exclude.end())	//只统计不在exclude中出现的单词次数
+ 
+ map/set支持列表初始化
+ map = {{key, value}, ....};
+ //map和set中的关键字必须是唯一的而multimap和multiset没有这个限制
+ eg：
+ vector<int> ivec = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
+ set<int> iset(ivec.cbegin(), ivec.end());
+ multiset<int> miset(ivec.cbegin(), ivec.cend());
+ cout << iset.size() << endl;	//打印出5个元素  //关键字不能重复
+ cout << miset.size() << endl;	//打印出10个元素
+ 
+ 
  
