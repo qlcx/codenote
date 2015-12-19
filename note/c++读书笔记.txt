@@ -879,7 +879,7 @@ eg:
  
  关联容器
  关键字：
-	有序容器：
+	有序容器：		//其关键字的排列顺序为字典序而不是按照输入顺序排列的
 		map			//保存关键字-值对
 		set			//只保存关键字的容器
 		multimap	//关键字可重复出现的map
@@ -961,6 +961,33 @@ eg:
  
  对map进行下标操作获得一个mapped_type对象，而解引用一个map迭代器得到的是value_type对象
  
+ 访问元素
+ c.find(k);		//返回一个迭代器，指向第一个关键字为k的元素，如果容器中没有则返回一个尾后迭代器
+ c.count(k);	//返回迭代器中关键字k的数量
+ c.lower_bound(k);	//返回一个迭代器，指向第一个关键字不小于k的元素
+ c.upper_bound(k);	//返回一个迭代器，指向第一个关键字大于k的元素
+ c.equal_range(k);	//返回一个迭代器pair，表示关键字等于k的元素范围，若k不存在，则pair的两个成员均等于c.end()
+					//pair中第一个迭代器指向第一个与关键字匹配的元素，第二一个迭代器指向最后一个匹配元素之后的位置
+ //lower_bound和upper_bound不适用于无序容器
+ 
+ 对于multimap和multiset来说，它们有多个元素具有给定关键字，则这些关键字在容器中会相邻储存
+ 
+ 使用find查找(lower_bound和upper_bound来返回一个迭代器范围来输出) //如果没有关键字匹配lower_bound和upper_bound会返回相等的迭代器-关键字的第一个安全插入点
+ //c为multimap类型，k是需要查找的关键字
+ auto iter = c.find(k);
+ auto cnt = c.count(k);	//返回关键字为k的元素数量
+ //循环查找所有关键字为k的元素值
+ while(cnt) {
+	cout << iter->second << endl;
+	++iter;
+	--cnt;
+ }
+ 
+ 使用equal_range查找
+ for (auto pos =  equal_range(k); pos.first != pos.second; ++pos.fisrt)
+	cout << pos.first->second << endl;	//打印每个元素值
+ 
+ 无序容器(哈希函数、桶)	P395
  
  
 
