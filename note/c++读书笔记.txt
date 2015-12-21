@@ -989,6 +989,130 @@ eg:
  
  无序容器(哈希函数、桶)	P395
  
+ 智能指针(头文件memory)
+ 1、shared_ptr:	允许多个指针指向同一个对象
+ weak_ptr(弱引用)指向shared_ptr所管理的对象
+ 2、unique_ptr:	独占所指向的对象
+ 
+ 1、shared_ptr类：
+ shared_ptr<string> p1;	//shared_ptr, 可以指向string
+ //默认初始化的智能指针中保存着一个空指针
+ 
+ make_shared<T> (args)	//返回一个shared_ptr,指向一个动态分配的类型为T的对象，使用args初始化对象(最安全的分配和使用动态内存)
+ shared_ptr<T>p(q)		//p是shared_ptr q的拷贝，会递增q中的计数器，q中的指针必须能转换为T*
+ p.unique()				//若p.use_count()为1，返回true,否则返回false
+ p.use_count()			//返回与p共享对象的智能指针数量
+ 
+ shared_ptr<string> p4 = make_shared<string>(10, '9');	//p4指向一个值为"9999999999"的string
+ shared_ptr<int> p5 = make_shared<int>();	//p5指向一个int(初始化为0)
+ 
+ auto r = make_shared<int>(42);
+ r = q5;//给r赋值，令它指向另一个地址
+		//递增q5指向的对象的引用指针
+		//递减r指向的对象的引用指针
+		//r原来指向的对象已没有引用者，会自动释放
+ 
+ shared_ptr会自动释放相关联的内存(eg：动态内存)
+ 
+ new/delete
+ int *p1 = new int(1024);	//p1指向的对象值为1024
+ 
+ int *pi = new int;	//pi指向一个动态分配的、未初始化的无名对象
+ int *ps = new string;	//初始化为空string
+ //动态分配的const的对象必须初始化(类类型其动态对象可以隐式初始化(eg:string)，其他类型对象必须显示初始化)
+ const int *p = new const int(1024);
+ const string *ps = new string;
+ 
+ 接受指针参数的智能指针构造函数时explicit的，必须使用直接初始化的形式
+ shared_ptr<int> p1 = new int(1024);	//error
+ shared_ptr<int> p2(new int(1024));		//true
+ 
+ 1、不使用相同的内置指针初始化(reset)多个智能指针
+ 2、不delete get()返回的指针
+ 3、如果你使用get()返回的指针，记住当最后一个对应的智能指针销毁后，你的指针就变为无效了
+ 3、不使用get()初始化或reset另一个智能指针
+ 
+/*********************   double free ********************/
+  5 void process(shared_ptr<int> ptr)
+  6 {
+  7     cout << ptr.use_count()  << endl;
+  8 }
+  9 
+ 10 //!!!!!!!!!!double free
+ 11 int main()
+ 12 {
+ 13     shared_ptr<int> p(new int(42));
+ 14     cout << p.use_count() << endl;
+ 15     process(shared_ptr<int>(p.get()));
+ 16     cout << p.use_count() << endl;
+ 17     process(shared_ptr<int>(p.get()));
+ 18     cout << p.use_count() << endl;
+ 19     return 0;
+ 20 }
+/*********************   double free ********************/
+
+ unique_ptr指针(在某个时刻只能有一个unique_ptr指向一个给定的对象)
+ 且没有类似make_shared的标准库函数，所以如果要初始化unique_ptr的话必须采用直接初始化的方式
+ unique_ptr<int> p1(new int(42));	//直接初始化
+ 
+ 由于unique_ptr拥有它指向的对象，因此unique_ptr不支持普通的拷贝或赋值操作
+ unique_pt<int> p2(p1);	//error
+ unique_ptr<int> p3;
+ p3 = p1;				//error
+ 
+ //虽然不能拷贝或赋值，但是可以通过release和reset将指针转移
+ u.release();	//u放弃对指针的控制权，返回指针，并将u置为空(通常用来被初始化另一个智能指针或给另一个智能指针赋值)
+ //释放u指向的对象，如果提供了内置指针q，令u指向这个对象；否则将u置为空
+ u.reset();
+ u.reset(q);
+ u.reset(nullptr);
+ 
+ unique_ptr<int> p(new int(42));
+ p.release();				//false: p不会释放内存，而且我们丢失了指针
+ auto p1 = p.release();		//true:	必须记得delete(p1);
+ 
+ //不能拷贝和赋值有一个例外就是在unique_ptr即将要被销毁时，例如局部函数返回一个unique_ptr
+ 
+ unique_ptr删除器
+ //p指向一个类型为objT的对象，并使用一个类型为delT的对象释放objT对象
+ //它会调用一个名为fcn的delT类型对象
+ unique_ptr<objT, delT> p (new objT, fcn);
+ 
+ weak_ptr指向由一个shared_ptr管理的对象
+ 将一个weak_ptr绑定到一个shared_ptr不会改变shared_ptr的引用计数
+ 
+ //weak_ptr需要一个shared_ptr来初始化
+ auto p = make_shared<int>(42);
+ weak_ptr<int> wp(p);	//wp弱共享p；p的引用计数未改变	//p释放的时候无论weak_ptr有没有指向它，对象都会被释放
+ 
+ weak_ptr不能直接访问对象
+ wp.lock();	//用于检查指向的对象是否存在，如果存在则返回一个共享对象的shared_ptr
+ 
+ typedef int arrT[42];	//arrT表示42个int的数组类型
+ int *p = new arrT;		//分配一个42个int的数组；p指向第一个int
+ 
+ 默认的初始化	
+ int *pia = new int[10];	// 10个未初始化的int
+ int *pia2 = new int[10]();	//10个值初始化为0的int
+ int *pia3 = new int[10]{1, 2, 3, 4, 5};	//列表初始化
+ 
+ char *cp = new char[0];	//true：但cp不能解引用
+ 
+ unique_ptr版本的动态数组
+ unique_ptr<int[]> up(new int[10]);	//up指向一个包含10个未初始化int的数组
+ up.release();	//自动用delete[]销毁其指针
+ //当一个unique_ptr指向一个数组时，我们不能使用点和箭头成员运算符
+ up[i];	//返回up拥有的数组中位置i处的对象
+ 
+ shared_ptr不能直接管理动态内存，需要提供一个自定义个删除器(lambda)
+ //shared_ptr没有内置下标运算符，所以如果要访问数组中元素，需要使用get()转化为内置指针
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
 
  
