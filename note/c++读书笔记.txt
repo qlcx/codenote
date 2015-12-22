@@ -1107,6 +1107,38 @@ eg:
  shared_ptr不能直接管理动态内存，需要提供一个自定义个删除器(lambda)
  //shared_ptr没有内置下标运算符，所以如果要访问数组中元素，需要使用get()转化为内置指针
  
+ new将内存分配和对象构造组合在了一起
+ allocator类(头文件memory), 可以将内存分配和对象构造分离开来
+ 
+ allocator<string> alloc;	//可以分配string的allocator对象
+ auto const p = alloc.allocate(n);	//分配n个未初始化的string(未构造)
+ 
+ a.deallocate(p, n);	//释放从指针p(类型相同)中地址开始的内存，这块内存保存了n个类型为T的对象，p必须是先前由allocate返回的指针
+						//n必须是p创建时所要求的的大小，在使用deallocate前必须对每一个在这个内存中的对象使用destroy
+ a.destroy(p);			//对p指向的对象执行析构函数(p为T*类型)
+ a.construct(p, args);	//arg被传递给类型为T的构造函数，用来在p指向的内存中构造一个对象
+ 
+ allocater分配的内存是未构造的，使用construct来构造其中元素
+ 
+ //p指向最后构造的元素之后的位置
+ alloc.construct(p++);	//*p为空字符串
+ alloc.construct(p++, 10, 'c');	//*p为cccccccccc
+ alloc.construct(p++, "hi");	//*p为hi
+ 
+ //不能在未构造的情况下使用原始内存
+ cout << *p << endl;	//error
+ 
+ //销毁元素需要调用destroy，且只能对真正构造的元素使用destroy
+ 
+ //使用deallocate释放内存
+ 
+ allocator算法
+ uninitialized_copy(b,e,b2)		//从迭代器b和e指出的范围中拷贝元素到b2指定的未构造的原始内存中(b2需要足够大)
+ uninitialized_copy_n(b,n,b2);	//拷贝n个元素到b2开始的内存中
+ uninitialized_fill(b,e,t);		//迭代器b到e指定的原始内存中创建对象(值均为t的拷贝)
+ uninitialized_fill_n(b,n,t);	//创建n个对象(b指向的内存需要足够大)
+ 
+ 
  
  
  
