@@ -1309,8 +1309,56 @@ eg:
  //如果类定义了调用运算符，则该类的对象称作函数对象，可以作为泛型算法的实参
  //标准库 函数对象 P510
  
+ 可调用对象和function(functional头文件)	P512
  
+ eg：
+	不同类型具有相同的调用形式
+	//普通函数
+	int add(int i, int j) {return i+j;}
+	//lambda
+	auto mod = [](int i, int j) {return i % j;}
+	//函数对象类
+	struct divide {
+		int operator()(int denominator, int divisor){
+			return denominator /divisor;
+		}
+	}
+	//它们共享了一种调用形式int(int, int)	//接受两个int类型，返回一个int类型
+	定义一个函数表可以实现共享
+	map<string, function<int(int, int)>> binops; 由于第二个参数是函数类型，它们各不相同，所以使用function
+	function<int(int, int)>	//他表示接受两个int，返回一个int的可调用对象
+	function<int(int, int)> f1 = add;	//函数指针
+	function<int(int, int)> f2 = divide;	//函数对象类的对象
+	function<int(int, int)> f2 = [](int i, int j)	//lambda
+									{return i * j}
+	cout << f1(4, 2) << endl;	//6
+	cout << f2(4, 2) << endl;	//2
+	cout << f2(4, 2) << endl;	//8
+	
+	//不能将重载函数的名字直接写入function
+	int add(int i, int j) {return i + j;}
+	Sales_data add(const Sale_data&, const Sales_data&);
+	map<string, function<int(int, int)>> binops;
+	binops.insert({"+", add});	//error 二义性
+	//解决方法
+	一：
+		int (*fp)(int, int) = add;
+		binops.insert({"+", add});
+	二：
+		binops.insert({"+", [](int a, int b) {return add(a, b);}});
+	
+ 类型转换运算符
+ operator type() const;
+ //可以面向任意类型(除void)进行定义，不允许转换成数组或者函数类型，但允许转换成指针(包括数组指针，函数指针)和引用类型
+ //不能声明返回类型，形参列表必须为空
+ //必须定义成类的成员函数
  
+ 显示类型转换符(避免发生意想不到的错误P516)
+ //编译器不会自动执行这一转换
+ explicit operator type() const;	//发生类型转换的时候必须显示的转换才能编译通过
+ //例外：当作为(1、if，do，while，for的条件部分；2、！，||，&&的运算对象；3、(? :)的条件表达式)的时候还是会发生隐式类型转换
+ 
+ //除了显示地向bool类型转换之外，避免定义类型转换函数
  
 
  
