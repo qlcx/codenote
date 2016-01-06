@@ -1482,16 +1482,39 @@ eg:
  类模板(类似于vector等标准库模板)P584
  类模板的成员函数的名字作用域：	P586
  eg:	template <typename T> ret-type Blob<T>::member-name(param-list);
- //默认情况下，对于一个实例化了的类模板，其成员只有在使用时才被实例化P587
+ //默认情况下，对于一个实例化了的类模板，其成员函数只有在使用时才被实例化P587
  
  在类模板作用域内可以不必指定模板实参，而在作用域外则需要指定P588
  eg:	//BlobPtr  类模板
  作用域内：BlobPtr& operator++();
  作用域外：BlobPtr<T>& operator++();
 	
+ //另模板自己的类型参数成为友元
+ template <typename Type> class Bar {
+ friend Type;	//将访问权限授予用来实例化Bar的类型
+ };
+ 类型名Foo、Sales_data
+ Foo将成为Bar<Foo>的友元，Sales_data将成为Bar<Sales_data>的友元
  
+ //类模板的static成员
+ template <typename T> class Foo {
+ public:
+	static size_t count() {return ctr;}
+ private:
+	static size_t ctr;
+ };
+ Foo<int> f1, f2, f3;	//此三个对象共享静态成员(函数)
  
-  
+ //模板内不能重用模板参数名    P592
+ //使用模板类型参数的类型成员
+	template <typename T> typename T::value_type top()....	//P593
+ 
+ //默认模板实参   P594(可以是可调用对象，并且遵循标准库函数的一般规律)
+ template <class T = int> class Numbers {....};	//T默认为int
+ Numbers<long double> v1;		//使用long double类型代替T类型实例化
+ Numbers<> v2;					//使用T默认类型int实例化
+ 
+ //显示实例化减少开销    P598
  
  
  
