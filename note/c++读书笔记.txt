@@ -1516,6 +1516,35 @@ eg:
  
  //显示实例化减少开销    P598
  
+ 将实参传递给带模板类型的函数形参时，能够自动应用的类型转换只有const转换及数组或函数到指针的转换
+ (算术转换、派生类向基类的转换以及用户定义的转换都是不允许的)P601
+ //如果函数参数类型不是模板参数，则对实参进行正常的类型转换
+ 
+ //函数模板显示实参 P604
+ template <typename T1, typename T2, typename T3> T1 sum(T2, T3);	//T2, T3可以由参数列表推断出类型，而T1必须显示指定
+ auto val1 = sum<long long> (i, lng);	//T1的类型为long long
+ //显示模板实参必须按照从左至右的顺序与对应的模板参数匹配
+ template <typename T1, typename T2, typename T3> T3 sum(T1, T2);
+ auto val2 = sum<long long> (i, lng);	//error 模板参数不匹配
+ auto val3 = sum<long long, int, long> (i, lng);	//true 全部显示指定类型  
+ 
+ //使用尾置返回类型指定函数返回类型
+ template <typename It> 
+ auto fcn(It beg, It end) -> decltype(*beg) {
+	return *beg;		//如果需要返回元素的值而不是引用的时候就需要类型转换模板了
+ }
+ 
+ //标准类型转换模板P606
+ 
+ P608
+ template <typename T> void f3(T&&);	//可以接受右值，也可以接受左值
+ f3(5);		//T推断为int
+ int i = 4;	//i为左值
+ f3(i);		//T推断为int&
+ //对于类型别名或模板参数来说支持引用折叠
+ X& &、X& &&和X&& &折叠为X&
+ X&& &&折叠为X&&
+ 
  
  
  
