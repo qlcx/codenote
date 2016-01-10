@@ -43,10 +43,39 @@ select模型中循环和传递监视对象信息都会占用很大资源
 
 
 epoll模型
-epoll_create:	创建保存epoll文件描述符的空间
-epoll_ctl:		向空间注册并注销文件描述符
-epoll_wait:		等待文件描述符发生变化
+epoll_create:	创建保存epoll文件描述符的空间  
+int epoll_create(int size);		//成功返回文件描述符，失败返回-1
+size的大小只是向操作系统提供建议而并非是决定值
 
+epoll_ctl:		向空间注册并注销文件描述符
+int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+op:用于指定监视对象的添加、删除或更改等操作
+	1、EPOLL_CTL_ADD: 将文件描述符注册到epoll例程
+	2、EPOLL_CTL_DEL: 从epoll例程中删除文件描述符 (第四个参数可以为NULL)
+	3、EPOLL_CTL_MOD: 更改注册的文件描述符的关注事件发生情况
+event:监视对象的事件类型
+
+epoll_wait:		等待文件描述符发生变化
+int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
+//成功时返回发生事件的文件描述符数
+events:保存发生事件的文件描述符集合的结构体地址值(所指的缓冲区需要动态分配)
+naxevents:第二个参数中可以保存的最大事件数
+timeout:等待时间，传递-1时，一直等待直到发生事件
+
+epoll_event结构体用来管理发生事件的文件描述符
+struct epoll_event 
+{
+	__uint32_t events;
+	epoll_data_t data;
+}
+
+typedef union epoll_data
+{
+	void *ptr;
+	int fd;
+	__uint32_t u32;
+	__uint64_t u64;
+} epoll_data_t;
 
 
 
