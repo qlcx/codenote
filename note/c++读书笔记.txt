@@ -1562,8 +1562,50 @@ eg:
  
  string中下标最小的字符对应bitset中的高位
  
+ //随机数操作  P660
+ //随机数引擎
+ default_random_engine e;	//生成随机无符号随机整数数(生成随机引擎对象)
+ //分布式类型引擎(要与上面的引擎对象结合使用(种子))
+ uniform_int_distribution<unsigned> u(0, 9);	//设定值范围
+ u(e);		//生成0到9之间(包含)的均匀分布的随机数  类型为unsigned (e即为种子值，相同的种子值生成的随机数序列不变)
+ uniform_real_distribution<double> f(0, 1);		//设定值范围
+ f(e);		//生成0-1之间的double类型的随机数
  
+ uniform_int_distribution<> u(0, 9);	//默认int类型
+ uniform_real_distribution<double> f(0, 1);		//默认double类型
  
+ 要使得每次发生的随机数是不同的可以将类型设置为static或者设置随机数发生器种子(seed) P662
+ 
+ bernoulli_distribution类   总是返回一个bool 默认返回true的概率是0.5  不接受模板参数
+ bernoulli_distribution b(.55);	//可以调整概率   55/45
+ 
+ IO操作
+ //格式化输入输出
+ //当操作符改变流的格式状态时，通常改变后的状态对所有后续IO都有效果
+ cout << boolalpha;	//后续bool值输出为true/false
+ cout << noboolalpha;	//改回默认bool输出0/10
+ cout << hex;	cout << oct;	cout << dec;	//分别输出十六进制，八进制，十进制(只对整型值有效)
+ cout << showbase;	//显示进制  十六进制0x  八进制0
+ cout << noshowbase;	//恢复默认状态
+ cout << uppercase << showbase << hex;  //十六进制前的X为大写形式
+ cout << nouppercase << noshowbase << dec;
+ 
+ precision和setprecision(头文件iomanip)操纵符用来改变打印精度  p669
+ cout << precision(12);	//打印精度为12位
+ cout << setprecision(3);	//打印精度为3位
+ cout << precision();	//返回当前打印精度
+ 
+ showpoint强制打印小数点  noshowpoint
+ scientific科学计数法
+ fixed定点十进制
+ hexfloat强制浮点数转换为十六进制   defaultfloat恢复默认状态
+ 
+ //输出补白
+ setw指定下一个数字或字符串值的最小空间
+ left左对齐输出
+ right右对齐输出  默认格式
+ internal控制负数符号的位置(左对齐符号右对齐值中间填空格)
+ setfill允许指定一个字符代替默认的空格来补白输出
  
  
 
