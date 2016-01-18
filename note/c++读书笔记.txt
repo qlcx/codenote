@@ -1603,11 +1603,29 @@ eg:
  //输出补白
  setw指定下一个数字或字符串值的最小空间
  left左对齐输出
- right右对齐输出  默认格式
+ right右对齐输出  默认格式8
  internal控制负数符号的位置(左对齐符号右对齐值中间填空格)
  setfill允许指定一个字符代替默认的空格来补白输出
  
+ 低层IO操作  P673
  
+ //运行时类型识别(RTTI)
+ typeid:用于返回表达式的类型(作用于数组或函数的时候，并不执行向指针的标准类型转换)
+ dynamic_cast:用于将基类的指针或引用安全地转换成派生类的指针或引用
+ //假使不能使用虚函数，我们就可以使用一个RTTI运算符，但是也会带来更高的风险
+ 
+ 
+ //枚举成员是const类型的(限定作用域的枚举类型不会自动进行隐式类型转换)
+ 限定作用域的枚举类型：enum class color1 {red, yellow, green};
+ 不限定作用域的枚举类型：enum color2 {red, yellow, green};
+ 
+ enum color3 {red, yellow, green};	//error 重复定义了枚举成员
+ color1 p = color1::green;	//true
+ color2 p2 = green;			//true, 也可以显示的指定作用域   color2::green
+ 
+ 指定enum的类型
+ enum name : type {...};
+ 限定作用域的默认成员类型为int，而不限定作用域的enum不存在默认类型
 
  
  
