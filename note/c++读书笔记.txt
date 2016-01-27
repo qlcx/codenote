@@ -68,6 +68,7 @@ auto类型
 auto让编译器通过初始值来推算变量的类型
 atuo i = a + b;	//i初始化为a和b相加的结果
 auto会忽略掉顶层const而保留底层const
+但如果变量是引用类型则会保留顶层const
 
 decltype类型
 它的作用是选择并返回操作数的数据类型
