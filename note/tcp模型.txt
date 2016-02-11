@@ -1,3 +1,25 @@
+getsockopt&setsockopt   对socket套接字的所有可选项进行读取或设置
+int setsockopt(int sock, int level, int optname, void *optval, socklen_t *optlen);
+
+unistd.h
+dup&dup2	//文件描述符拷贝函数
+int dup(int fildes);
+int dup2(int fildes, int fildes2);	//指定文件描述符的值
+
+readv&writev函数   对数据进行整合传输及发送的函数
+适用于任何情况，但是主要在tcp层关闭Nagle算法的时候更能体现其价值
+sys/uio.h
+ssize_t writev(int filedes, const struct iovec* iov, int iovcnt);
+参数一：套接字文件描述符
+参数二：
+	struct iovec {
+		void* iov_base;	//缓冲地址(数据缓冲区的地址)
+		size_t iov_len;	//缓冲区长度
+	}
+参数三：参数二的长度信息
+
+
+
 select模型
 
 设置文件描述符
