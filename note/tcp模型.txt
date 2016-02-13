@@ -81,6 +81,7 @@ epoll_wait:		等待文件描述符发生变化
 int epoll_wait(int epfd, struct epoll_event *events, int maxevents, int timeout);
 //成功时返回发生事件的文件描述符数
 events:保存发生事件的文件描述符集合的结构体地址值(所指的缓冲区需要动态分配)
+events = malloc(sizeof(struct epoll_event)*EPOLL_SIZE);	//EPOLL_SIZE是宏常量(参数二的大小)
 naxevents:第二个参数中可以保存的最大事件数
 timeout:等待时间，传递-1时，一直等待直到发生事件
 
@@ -90,6 +91,17 @@ struct epoll_event
 	__uint32_t events;
 	epoll_data_t data;
 }
+
+//events:
+eg：
+events = EPOLLIN || events = EPOLLIN|EPOLLET
+1、EPOLLIN：需要读取数据的情况
+2、EPOLLOUT：输出缓冲为空，可以立即发送数据的情况
+3、EPOLLPRI：收到OOB数据的情况
+4、EPOLLRDHUP：断开连接或半关闭的情况(边缘出发方式的情况下)
+5、EPOLLERR：发生错误的情况
+6、EPOLLET：以边缘触发的方式得到事件通知
+7、EPOLLONESHOT：发生一次事件后，相应文件描述符不再收到事件通知(epoll_ctl函数第二个参数传递EPOLL_CTL_MOD)
 
 typedef union epoll_data
 {
