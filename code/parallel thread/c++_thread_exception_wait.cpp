@@ -24,6 +24,10 @@ class thread_guard
 {
 public:
 	explicit thread_guard(thread& t_) : t(t_) { }
+	/*
+	//此同时构造函数考虑传递std::thread对象的情况
+	thread_guard(thread& t_) : t(move(t_)) { }
+	*/
 	~thread_guard() 
 	{
 		if(t.joinable())	//一旦调用过join后joinable就会返回false
