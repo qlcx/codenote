@@ -23,6 +23,3 @@ function catNames(paragraph) {
 catNames("born 20/09/2004 (mother Yellow Bess): Doctor Hobbles the 2nd, Noog");
 => ["Doctor Hobbles the 2nd", "Noog"]
 
-
----------------
-testing
